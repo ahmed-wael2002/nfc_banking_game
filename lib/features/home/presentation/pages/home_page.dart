@@ -40,18 +40,15 @@ class _HomePageBodyState extends State<HomePageBody> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('NFC Banking Game'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.background,
         foregroundColor: Colors.white,
       ),
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Theme.of(context).colorScheme.primary.withOpacity(0.1),
-              Colors.white,
-            ],
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFF000000), Color(0xFF160005)],
           ),
         ),
         child: Padding(
@@ -64,14 +61,21 @@ class _HomePageBodyState extends State<HomePageBody> {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primary.withOpacity(0.4),
+                  ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
-                      spreadRadius: 1,
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withOpacity(0.25),
+                      spreadRadius: 2,
+                      blurRadius: 20,
+                      offset: const Offset(0, 6),
                     ),
                   ],
                 ),
@@ -79,17 +83,16 @@ class _HomePageBodyState extends State<HomePageBody> {
                   children: [
                     Icon(
                       Icons.credit_card,
-                      size: 64,
+                      size: 48,
                       color: Theme.of(context).colorScheme.primary,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 12),
                     Text(
                       'Welcome to Ultimate Banking Game',
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 8),
@@ -97,7 +100,7 @@ class _HomePageBodyState extends State<HomePageBody> {
                       'Manage your NFC banking experience',
                       style: Theme.of(
                         context,
-                      ).textTheme.bodyLarge?.copyWith(color: Colors.grey[600]),
+                      ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -126,7 +129,7 @@ class _HomePageBodyState extends State<HomePageBody> {
                           title: 'Scan Card',
                           subtitle: 'Read card data',
                           onTap: () => _showNfcScanModal(context),
-                          color: Colors.blue,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                         _buildActionButton(
                           context,
@@ -134,7 +137,7 @@ class _HomePageBodyState extends State<HomePageBody> {
                           title: 'Register User',
                           subtitle: 'Create new user',
                           onTap: () => _showCreateUserModal(context),
-                          color: Colors.green,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                         _buildActionButton(
                           context,
@@ -142,7 +145,7 @@ class _HomePageBodyState extends State<HomePageBody> {
                           title: 'Transaction',
                           subtitle: 'Deposit or withdraw',
                           onTap: () => _showTransactionModal(context),
-                          color: Colors.purple,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                       ],
                     );
@@ -169,16 +172,17 @@ class _HomePageBodyState extends State<HomePageBody> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: color.withOpacity(0.2),
-              spreadRadius: 1,
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+              color: color.withOpacity(0.35),
+              spreadRadius: 2,
+              blurRadius: 18,
+              offset: const Offset(0, 6),
             ),
           ],
+          border: Border.all(color: color.withOpacity(0.4)),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -186,18 +190,18 @@ class _HomePageBodyState extends State<HomePageBody> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
+                color: color.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, size: 32, color: color),
+              child: Icon(icon, size: 28, color: Colors.white),
             ),
             const SizedBox(height: 12),
             Flexible(
               child: Text(
                 title,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  color: Colors.white,
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 2,
@@ -211,7 +215,7 @@ class _HomePageBodyState extends State<HomePageBody> {
                 subtitle,
                 style: Theme.of(
                   context,
-                ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
+                ).textTheme.bodySmall?.copyWith(color: Colors.white70),
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,

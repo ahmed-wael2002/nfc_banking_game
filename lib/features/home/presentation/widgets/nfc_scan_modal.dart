@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nfc/features/home/presentation/blocs/get_user_bloc.dart';
 import 'package:nfc/features/home/domain/entities/user.dart';
 import 'package:nfc/core/layers/presentation/state/requests/request_cubit/request_cubit.dart';
+import 'package:nfc/core/theme/app_colors.dart';
 
 class NfcScanModal extends StatefulWidget {
   const NfcScanModal({super.key});
@@ -46,9 +47,12 @@ class _NfcScanModalState extends State<NfcScanModal> {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.7,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+        ),
       ),
       child: Column(
         children: [
@@ -58,7 +62,7 @@ class _NfcScanModalState extends State<NfcScanModal> {
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: Colors.grey[300],
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -78,6 +82,7 @@ class _NfcScanModalState extends State<NfcScanModal> {
                   'Scan NFC Card',
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
               ],
@@ -175,20 +180,25 @@ class _NfcScanModalState extends State<NfcScanModal> {
           const SizedBox(height: 24),
           Text(
             'Scanning NFC Card...',
-            style: Theme.of(
-              context,
-            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
           const SizedBox(height: 12),
           Text(
             'Please hold your NFC card near the device',
             style: Theme.of(
               context,
-            ).textTheme.bodyLarge?.copyWith(color: Colors.grey[600]),
+            ).textTheme.bodyLarge?.copyWith(color: Colors.white70),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24),
-          const CircularProgressIndicator(),
+          CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(
+              Theme.of(context).colorScheme.primary,
+            ),
+          ),
         ],
       ),
     );
@@ -201,10 +211,14 @@ class _NfcScanModalState extends State<NfcScanModal> {
         Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.green.withOpacity(0.1),
+            color: AppColors.acceptedGreen.withOpacity(0.1),
             shape: BoxShape.circle,
           ),
-          child: const Icon(Icons.check_circle, size: 64, color: Colors.green),
+          child: Icon(
+            Icons.check_circle,
+            size: 64,
+            color: AppColors.acceptedGreen,
+          ),
         ),
         const SizedBox(height: 24),
 
@@ -212,7 +226,7 @@ class _NfcScanModalState extends State<NfcScanModal> {
           'Card Data Retrieved Successfully!',
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
-            color: Colors.green,
+            color: AppColors.acceptedGreen,
           ),
           textAlign: TextAlign.center,
         ),
@@ -223,9 +237,11 @@ class _NfcScanModalState extends State<NfcScanModal> {
           width: double.infinity,
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.grey[50],
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.grey[300]!),
+            border: Border.all(
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -252,7 +268,7 @@ class _NfcScanModalState extends State<NfcScanModal> {
             label,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w600,
-              color: Colors.grey[700],
+              color: Colors.white70,
             ),
           ),
         ),
@@ -260,9 +276,10 @@ class _NfcScanModalState extends State<NfcScanModal> {
         Expanded(
           child: Text(
             value,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+            ),
           ),
         ),
       ],
@@ -328,13 +345,7 @@ class _NfcScanModalState extends State<NfcScanModal> {
               : 'Scan Failed',
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
-            color: isNfcAvailabilityError
-                ? Colors.orange
-                : isCapacityError
-                ? Colors.blue
-                : isNoDataError
-                ? Colors.grey
-                : Colors.red,
+            color: Colors.white,
           ),
         ),
         const SizedBox(height: 12),
@@ -342,7 +353,7 @@ class _NfcScanModalState extends State<NfcScanModal> {
           errorMessage,
           style: Theme.of(
             context,
-          ).textTheme.bodyLarge?.copyWith(color: Colors.grey[600]),
+          ).textTheme.bodyLarge?.copyWith(color: Colors.white70),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 24),
@@ -351,7 +362,7 @@ class _NfcScanModalState extends State<NfcScanModal> {
             'Please enable NFC in your device settings and try again.',
             style: Theme.of(
               context,
-            ).textTheme.bodyMedium?.copyWith(color: Colors.grey[500]),
+            ).textTheme.bodyMedium?.copyWith(color: Colors.white60),
             textAlign: TextAlign.center,
           )
         else if (isCapacityError)
@@ -359,7 +370,7 @@ class _NfcScanModalState extends State<NfcScanModal> {
             'This tag does not have enough space. Try using a different tag or reduce the data size.',
             style: Theme.of(
               context,
-            ).textTheme.bodyMedium?.copyWith(color: Colors.grey[500]),
+            ).textTheme.bodyMedium?.copyWith(color: Colors.white60),
             textAlign: TextAlign.center,
           )
         else if (isNoDataError)
@@ -367,7 +378,7 @@ class _NfcScanModalState extends State<NfcScanModal> {
             'This tag appears to be empty. Try writing data to it first.',
             style: Theme.of(
               context,
-            ).textTheme.bodyMedium?.copyWith(color: Colors.grey[500]),
+            ).textTheme.bodyMedium?.copyWith(color: Colors.white60),
             textAlign: TextAlign.center,
           )
         else
@@ -375,7 +386,7 @@ class _NfcScanModalState extends State<NfcScanModal> {
             'Please make sure your NFC card is properly positioned and try again.',
             style: Theme.of(
               context,
-            ).textTheme.bodyMedium?.copyWith(color: Colors.grey[500]),
+            ).textTheme.bodyMedium?.copyWith(color: Colors.white60),
             textAlign: TextAlign.center,
           ),
       ],

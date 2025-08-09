@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nfc/features/home/presentation/blocs/create_user_bloc.dart';
 import 'package:nfc/features/home/domain/entities/user.dart';
 import 'package:nfc/core/layers/presentation/state/requests/request_cubit/request_cubit.dart';
+import 'package:nfc/core/theme/app_colors.dart';
 import 'dart:math';
 
 class CreateUserModal extends StatefulWidget {
@@ -29,9 +30,12 @@ class _CreateUserModalState extends State<CreateUserModal> {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.8,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+        ),
       ),
       child: Column(
         children: [
@@ -41,7 +45,7 @@ class _CreateUserModalState extends State<CreateUserModal> {
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: Colors.grey[300],
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -61,6 +65,7 @@ class _CreateUserModalState extends State<CreateUserModal> {
                   'Create New User',
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
               ],
@@ -141,7 +146,7 @@ class _CreateUserModalState extends State<CreateUserModal> {
               'Fill in the details below to create a new user account',
               style: Theme.of(
                 context,
-              ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+              ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
             ),
             const SizedBox(height: 24),
 
@@ -156,7 +161,7 @@ class _CreateUserModalState extends State<CreateUserModal> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 filled: true,
-                fillColor: Colors.grey[50],
+                fillColor: Colors.white10,
               ),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
@@ -181,7 +186,7 @@ class _CreateUserModalState extends State<CreateUserModal> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 filled: true,
-                fillColor: Colors.grey[50],
+                fillColor: Colors.white10,
               ),
               keyboardType: TextInputType.number,
               validator: (value) {
@@ -222,9 +227,9 @@ class _CreateUserModalState extends State<CreateUserModal> {
                   Expanded(
                     child: Text(
                       'After creating the user, you will be prompted to scan an NFC card to register the user data.',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(color: Colors.white),
                     ),
                   ),
                 ],
@@ -256,9 +261,10 @@ class _CreateUserModalState extends State<CreateUserModal> {
           const SizedBox(height: 24),
           Text(
             'Registering User to NFC Card...',
-            style: Theme.of(
-              context,
-            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),
@@ -266,11 +272,15 @@ class _CreateUserModalState extends State<CreateUserModal> {
             'Please hold your NFC card near the device to register the user data',
             style: Theme.of(
               context,
-            ).textTheme.bodyLarge?.copyWith(color: Colors.grey[600]),
+            ).textTheme.bodyLarge?.copyWith(color: Colors.white70),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24),
-          const CircularProgressIndicator(),
+          CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(
+              Theme.of(context).colorScheme.primary,
+            ),
+          ),
         ],
       ),
     );
@@ -284,13 +294,13 @@ class _CreateUserModalState extends State<CreateUserModal> {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.green.withOpacity(0.1),
+              color: AppColors.acceptedGreen.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: const Icon(
+            child: Icon(
               Icons.check_circle,
               size: 64,
-              color: Colors.green,
+              color: AppColors.acceptedGreen,
             ),
           ),
           const SizedBox(height: 24),
@@ -298,7 +308,7 @@ class _CreateUserModalState extends State<CreateUserModal> {
             'User Created Successfully!',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
-              color: Colors.green,
+              color: AppColors.acceptedGreen,
             ),
             textAlign: TextAlign.center,
           ),
@@ -307,7 +317,7 @@ class _CreateUserModalState extends State<CreateUserModal> {
             'The user data has been registered to the NFC card',
             style: Theme.of(
               context,
-            ).textTheme.bodyLarge?.copyWith(color: Colors.grey[600]),
+            ).textTheme.bodyLarge?.copyWith(color: Colors.white70),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 32),
@@ -315,7 +325,7 @@ class _CreateUserModalState extends State<CreateUserModal> {
             onPressed: () => Navigator.pop(context),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-              backgroundColor: Colors.green,
+              backgroundColor: AppColors.acceptedGreen,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -347,7 +357,7 @@ class _CreateUserModalState extends State<CreateUserModal> {
             'Registration Failed',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
-              color: Colors.red,
+              color: Colors.white,
             ),
           ),
           const SizedBox(height: 12),
@@ -355,7 +365,7 @@ class _CreateUserModalState extends State<CreateUserModal> {
             errorMessage,
             style: Theme.of(
               context,
-            ).textTheme.bodyLarge?.copyWith(color: Colors.grey[600]),
+            ).textTheme.bodyLarge?.copyWith(color: Colors.white70),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24),
@@ -363,7 +373,7 @@ class _CreateUserModalState extends State<CreateUserModal> {
             'Please make sure your NFC card is properly positioned and try again.',
             style: Theme.of(
               context,
-            ).textTheme.bodyMedium?.copyWith(color: Colors.grey[500]),
+            ).textTheme.bodyMedium?.copyWith(color: Colors.white60),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 32),
@@ -388,7 +398,7 @@ class _CreateUserModalState extends State<CreateUserModal> {
                     setState(() {
                       _isScanning = false;
                     });
-                    context.read<CreateUserBloc>().emit(RequestState.initial());
+                    context.read<CreateUserBloc>().reset();
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),

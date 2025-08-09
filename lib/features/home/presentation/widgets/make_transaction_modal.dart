@@ -4,6 +4,7 @@ import 'package:nfc/core/layers/presentation/state/requests/request_cubit/reques
 import 'package:nfc/features/home/domain/entities/operation_type_enum.dart';
 import 'package:nfc/features/home/domain/entities/user.dart';
 import 'package:nfc/features/home/presentation/blocs/make_transaction_bloc.dart';
+import 'package:nfc/core/theme/app_colors.dart';
 
 class MakeTransactionModal extends StatefulWidget {
   const MakeTransactionModal({super.key});
@@ -28,9 +29,12 @@ class _MakeTransactionModalState extends State<MakeTransactionModal> {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.8,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+        ),
       ),
       child: Column(
         children: [
@@ -40,7 +44,7 @@ class _MakeTransactionModalState extends State<MakeTransactionModal> {
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: Colors.grey[300],
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -60,6 +64,7 @@ class _MakeTransactionModalState extends State<MakeTransactionModal> {
                   'Make Transaction',
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
               ],
@@ -140,7 +145,7 @@ class _MakeTransactionModalState extends State<MakeTransactionModal> {
               'Choose operation and amount, then scan the card',
               style: Theme.of(
                 context,
-              ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+              ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
             ),
             const SizedBox(height: 24),
 
@@ -152,27 +157,32 @@ class _MakeTransactionModalState extends State<MakeTransactionModal> {
               ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 8),
-            SegmentedButton<OperationTypeEnum>(
-              segments: const <ButtonSegment<OperationTypeEnum>>[
-                ButtonSegment(
-                  value: OperationTypeEnum.deposit,
-                  label: Text('Deposit'),
-                  icon: Icon(Icons.arrow_downward),
-                ),
-                ButtonSegment(
-                  value: OperationTypeEnum.withdrawal,
-                  label: Text('Withdraw'),
-                  icon: Icon(Icons.arrow_upward),
-                ),
-              ],
-              selected: <OperationTypeEnum>{_operationType},
-              onSelectionChanged: (selection) {
-                if (selection.isNotEmpty) {
-                  setState(() {
-                    _operationType = selection.first;
-                  });
-                }
-              },
+            Theme(
+              data: Theme.of(
+                context,
+              ).copyWith(canvasColor: Theme.of(context).colorScheme.surface),
+              child: SegmentedButton<OperationTypeEnum>(
+                segments: const <ButtonSegment<OperationTypeEnum>>[
+                  ButtonSegment(
+                    value: OperationTypeEnum.deposit,
+                    label: Text('Deposit'),
+                    icon: Icon(Icons.arrow_downward),
+                  ),
+                  ButtonSegment(
+                    value: OperationTypeEnum.withdrawal,
+                    label: Text('Withdraw'),
+                    icon: Icon(Icons.arrow_upward),
+                  ),
+                ],
+                selected: <OperationTypeEnum>{_operationType},
+                onSelectionChanged: (selection) {
+                  if (selection.isNotEmpty) {
+                    setState(() {
+                      _operationType = selection.first;
+                    });
+                  }
+                },
+              ),
             ),
 
             const SizedBox(height: 20),
@@ -188,7 +198,7 @@ class _MakeTransactionModalState extends State<MakeTransactionModal> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 filled: true,
-                fillColor: Colors.grey[50],
+                fillColor: Colors.white10,
               ),
               keyboardType: const TextInputType.numberWithOptions(
                 decimal: true,
@@ -232,9 +242,9 @@ class _MakeTransactionModalState extends State<MakeTransactionModal> {
                   Expanded(
                     child: Text(
                       'After tapping Make Transaction, scan the NFC card to apply the operation.',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(color: Colors.white),
                     ),
                   ),
                 ],
@@ -266,9 +276,10 @@ class _MakeTransactionModalState extends State<MakeTransactionModal> {
           const SizedBox(height: 24),
           Text(
             'Processing Transaction...',
-            style: Theme.of(
-              context,
-            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),
@@ -276,11 +287,15 @@ class _MakeTransactionModalState extends State<MakeTransactionModal> {
             'Hold the NFC card near the device to complete the transaction',
             style: Theme.of(
               context,
-            ).textTheme.bodyLarge?.copyWith(color: Colors.grey[600]),
+            ).textTheme.bodyLarge?.copyWith(color: Colors.white70),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24),
-          const CircularProgressIndicator(),
+          CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(
+              Theme.of(context).colorScheme.primary,
+            ),
+          ),
         ],
       ),
     );
@@ -294,13 +309,13 @@ class _MakeTransactionModalState extends State<MakeTransactionModal> {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.green.withOpacity(0.1),
+              color: AppColors.acceptedGreen.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: const Icon(
+            child: Icon(
               Icons.check_circle,
               size: 64,
-              color: Colors.green,
+              color: AppColors.acceptedGreen,
             ),
           ),
           const SizedBox(height: 24),
@@ -308,7 +323,7 @@ class _MakeTransactionModalState extends State<MakeTransactionModal> {
             'Transaction Successful!',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
-              color: Colors.green,
+              color: AppColors.acceptedGreen,
             ),
             textAlign: TextAlign.center,
           ),
@@ -317,7 +332,7 @@ class _MakeTransactionModalState extends State<MakeTransactionModal> {
             'The NFC card has been updated with the new balance',
             style: Theme.of(
               context,
-            ).textTheme.bodyLarge?.copyWith(color: Colors.grey[600]),
+            ).textTheme.bodyLarge?.copyWith(color: Colors.white70),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 32),
@@ -325,7 +340,7 @@ class _MakeTransactionModalState extends State<MakeTransactionModal> {
             onPressed: () => Navigator.pop(context),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-              backgroundColor: Colors.green,
+              backgroundColor: AppColors.acceptedGreen,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -357,7 +372,7 @@ class _MakeTransactionModalState extends State<MakeTransactionModal> {
             'Transaction Failed',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
-              color: Colors.red,
+              color: Colors.white,
             ),
           ),
           const SizedBox(height: 12),
@@ -365,7 +380,7 @@ class _MakeTransactionModalState extends State<MakeTransactionModal> {
             errorMessage,
             style: Theme.of(
               context,
-            ).textTheme.bodyLarge?.copyWith(color: Colors.grey[600]),
+            ).textTheme.bodyLarge?.copyWith(color: Colors.white70),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24),
@@ -373,7 +388,7 @@ class _MakeTransactionModalState extends State<MakeTransactionModal> {
             'Please ensure the NFC card is positioned correctly and try again.',
             style: Theme.of(
               context,
-            ).textTheme.bodyMedium?.copyWith(color: Colors.grey[500]),
+            ).textTheme.bodyMedium?.copyWith(color: Colors.white60),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 32),

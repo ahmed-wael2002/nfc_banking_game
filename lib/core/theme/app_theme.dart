@@ -4,20 +4,28 @@ import 'app_colors.dart';
 
 class AppTextTheme {
   static final appTextTheme = TextTheme(
-    titleLarge: AppTextStyles.extraLargeTextStyle50
-        .copyWith(color: AppColors.textSecondaryColor),
-    titleMedium: AppTextStyles.titleMediumTextStyle40
-        .copyWith(color: AppColors.textSecondaryColor),
-    titleSmall: AppTextStyles.titleSmallTextStyle30
-        .copyWith(color: AppColors.textSecondaryColor),
-    bodyLarge: AppTextStyles.bodyLargeTextStyle25
-        .copyWith(color: AppColors.textSecondaryColor),
-    bodyMedium: AppTextStyles.bodyMediumTextStyle20
-        .copyWith(color: AppColors.textSecondaryColor),
-    bodySmall: AppTextStyles.bodySmallTextStyle16
-        .copyWith(color: AppColors.textSecondaryColor),
-    labelMedium: AppTextStyles.extraLargeTextStyle50
-        .copyWith(color: AppColors.textSecondaryColor),
+    // Reduced, consistent sizes while honoring the app font
+    titleLarge: AppTextStyles.bodyLargeTextStyle30.copyWith(
+      color: AppColors.textSecondaryColor,
+    ),
+    titleMedium: AppTextStyles.bodyMediumTextStyle20.copyWith(
+      color: AppColors.textSecondaryColor,
+    ),
+    titleSmall: AppTextStyles.bodySmallTextStyle16.copyWith(
+      color: AppColors.textSecondaryColor,
+    ),
+    bodyLarge: AppTextStyles.bodyMediumTextStyle18.copyWith(
+      color: AppColors.textSecondaryColor,
+    ),
+    bodyMedium: AppTextStyles.bodySmallTextStyle14.copyWith(
+      color: AppColors.textSecondaryColor,
+    ),
+    bodySmall: AppTextStyles.bodySmallTextStyle12.copyWith(
+      color: AppColors.textSecondaryColor,
+    ),
+    labelMedium: AppTextStyles.bodySmallTextStyle14.copyWith(
+      color: AppColors.textSecondaryColor,
+    ),
   );
 }
 
@@ -116,30 +124,34 @@ class AppTextStyles {
   );
 
   static const bodyLargeTextStyle30 = TextStyle(
-      fontFamily: fontFamily,
-      fontSize: AppTextSizes.bodyLargeFontSize30,
-      fontWeight: FontWeight.w500,
-      color: textColor,
-      height: 20 / 30);
+    fontFamily: fontFamily,
+    fontSize: AppTextSizes.bodyLargeFontSize30,
+    fontWeight: FontWeight.w500,
+    color: textColor,
+    height: 20 / 30,
+  );
 
   static const veryLargeTextStyle40 = TextStyle(
-      fontFamily: fontFamily,
-      fontSize: AppTextSizes.veryLargeFontSize40,
-      fontWeight: FontWeight.w500,
-      color: textColor,
-      height: 20 / 40);
+    fontFamily: fontFamily,
+    fontSize: AppTextSizes.veryLargeFontSize40,
+    fontWeight: FontWeight.w500,
+    color: textColor,
+    height: 20 / 40,
+  );
 
   static const extraLargeTextStyle50 = TextStyle(
-      fontFamily: fontFamily,
-      fontSize: AppTextSizes.extraLargeFontSize50,
-      fontWeight: FontWeight.w500,
-      color: textColor,
-      height: 20 / 50);
+    fontFamily: fontFamily,
+    fontSize: AppTextSizes.extraLargeFontSize50,
+    fontWeight: FontWeight.w500,
+    color: textColor,
+    height: 20 / 50,
+  );
 
   static const appBarTextStyle60 = TextStyle(
-      fontSize: 60,
-      fontWeight: FontWeight.w700,
-      fontFamily: fontFamily,
-      color: textColor,
-      height: 20 / 60);
+    fontSize: 60,
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamily,
+    color: textColor,
+    height: 20 / 60,
+  );
 }
