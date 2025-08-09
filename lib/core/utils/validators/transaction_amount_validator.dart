@@ -1,10 +1,7 @@
 class TransactionAmountValidator {
-  TransactionAmountValidator({
-    required this.currentBalance,
-    required this.isWithdrawal,
-  });
+  TransactionAmountValidator({this.currentBalance, required this.isWithdrawal});
 
-  final double currentBalance;
+  final double? currentBalance;
   final bool isWithdrawal;
 
   String? call(String? value) {
@@ -18,7 +15,7 @@ class TransactionAmountValidator {
     if (parsed <= 0) {
       return 'Amount must be greater than 0';
     }
-    if (isWithdrawal && parsed > currentBalance) {
+    if (isWithdrawal && currentBalance != null && parsed > currentBalance!) {
       return 'Amount exceeds balance';
     }
     return null;

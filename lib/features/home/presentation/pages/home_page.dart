@@ -4,9 +4,10 @@ import 'package:nfc/features/home/presentation/blocs/create_user_bloc.dart';
 import 'package:nfc/features/home/presentation/blocs/delete_user_bloc.dart';
 import 'package:nfc/features/home/presentation/blocs/get_user_bloc.dart';
 import 'package:nfc/features/home/presentation/blocs/update_user_bloc.dart';
+import 'package:nfc/features/home/presentation/blocs/make_transaction_bloc.dart';
 import 'package:nfc/features/home/presentation/widgets/nfc_scan_modal.dart';
 import 'package:nfc/features/home/presentation/widgets/create_user_modal.dart';
-import 'package:nfc/features/home/presentation/widgets/transaction_modal.dart';
+import 'package:nfc/features/home/presentation/widgets/make_transaction_modal.dart';
 import 'package:nfc/service_locator.dart';
 
 class HomePage extends StatelessWidget {
@@ -53,102 +54,102 @@ class _HomePageBodyState extends State<HomePageBody> {
             ],
           ),
         ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Welcome Section
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
-                        spreadRadius: 1,
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.credit_card,
-                        size: 64,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'Welcome to Ultimate Banking Game',
-                        style: Theme.of(context).textTheme.headlineSmall
-                            ?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Manage your NFC banking experience',
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Colors.grey[600],
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 32),
-
-                // Action Buttons
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildActionButton(
-                        context,
-                        icon: Icons.qr_code_scanner,
-                        title: 'Scan Card',
-                        subtitle: 'Read card data',
-                        onTap: () => _showNfcScanModal(context),
-                        color: Colors.blue,
-                      ),
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              // Welcome Section
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.1),
+                      spreadRadius: 1,
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
                     ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: _buildActionButton(
-                        context,
-                        icon: Icons.person_add,
-                        title: 'Register User',
-                        subtitle: 'Create new user',
-                        onTap: () => _showCreateUserModal(context),
-                        color: Colors.green,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
                   ],
                 ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  height: 160,
-                  child: Expanded(
-                    child: _buildActionButton(
-                      context,
-                      icon: Icons.payments,
-                      title: 'Make Transaction',
-                      subtitle: 'Debit from balance',
-                      onTap: () => _showTransactionModal(context),
-                      color: Colors.purple,
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.credit_card,
+                      size: 64,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
-                  ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Welcome to Ultimate Banking Game',
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Manage your NFC banking experience',
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyLarge?.copyWith(color: Colors.grey[600]),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+
+              const SizedBox(height: 32),
+
+              // Action Buttons
+              Expanded(
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final bool isWide = constraints.maxWidth >= 600;
+                    final int crossAxisCount = isWide ? 3 : 2;
+                    final double childAspectRatio = isWide ? 1.4 : 1.0;
+                    return GridView.count(
+                      crossAxisCount: crossAxisCount,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      childAspectRatio: childAspectRatio,
+                      padding: const EdgeInsets.only(bottom: 8),
+                      children: [
+                        _buildActionButton(
+                          context,
+                          icon: Icons.qr_code_scanner,
+                          title: 'Scan Card',
+                          subtitle: 'Read card data',
+                          onTap: () => _showNfcScanModal(context),
+                          color: Colors.blue,
+                        ),
+                        _buildActionButton(
+                          context,
+                          icon: Icons.person_add,
+                          title: 'Register User',
+                          subtitle: 'Create new user',
+                          onTap: () => _showCreateUserModal(context),
+                          color: Colors.green,
+                        ),
+                        _buildActionButton(
+                          context,
+                          icon: Icons.payments,
+                          title: 'Transaction',
+                          subtitle: 'Deposit or withdraw',
+                          onTap: () => _showTransactionModal(context),
+                          color: Colors.purple,
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -166,7 +167,7 @@ class _HomePageBodyState extends State<HomePageBody> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
@@ -180,6 +181,7 @@ class _HomePageBodyState extends State<HomePageBody> {
           ],
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
               padding: const EdgeInsets.all(12),
@@ -190,21 +192,31 @@ class _HomePageBodyState extends State<HomePageBody> {
               child: Icon(icon, size: 32, color: color),
             ),
             const SizedBox(height: 12),
-            Text(
-              title,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
+            Flexible(
+              child: Text(
+                title,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                softWrap: true,
               ),
-              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 4),
-            Text(
-              subtitle,
-              style: Theme.of(
-                context,
-              ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
-              textAlign: TextAlign.center,
+            Flexible(
+              child: Text(
+                subtitle,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                softWrap: true,
+              ),
             ),
           ],
         ),
@@ -241,12 +253,9 @@ class _HomePageBodyState extends State<HomePageBody> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (_) => getService<GetUserBloc>()),
-          BlocProvider(create: (_) => getService<UpdateUserBloc>()),
-        ],
-        child: const TransactionModal(),
+      builder: (context) => BlocProvider(
+        create: (_) => getService<MakeTransactionBloc>(),
+        child: const MakeTransactionModal(),
       ),
     );
   }

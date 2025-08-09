@@ -6,10 +6,12 @@ import 'package:nfc/features/home/domain/repository/user_repository_interface.da
 import 'package:nfc/features/home/domain/usecases/create_user_usecase.dart';
 import 'package:nfc/features/home/domain/usecases/delete_user_usecase.dart';
 import 'package:nfc/features/home/domain/usecases/get_user_usecase.dart';
+import 'package:nfc/features/home/domain/usecases/make_transaction_usecase.dart';
 import 'package:nfc/features/home/domain/usecases/update_user_usecase.dart';
 import 'package:nfc/features/home/presentation/blocs/create_user_bloc.dart';
 import 'package:nfc/features/home/presentation/blocs/delete_user_bloc.dart';
 import 'package:nfc/features/home/presentation/blocs/get_user_bloc.dart';
+import 'package:nfc/features/home/presentation/blocs/make_transaction_bloc.dart';
 import 'package:nfc/features/home/presentation/blocs/update_user_bloc.dart';
 
 final _getIt = GetIt.instance;
@@ -55,6 +57,10 @@ void _setUpUseCases() {
   _getIt.registerSingleton<CreateUserUsecase>(
     CreateUserUsecase(_getIt.get<UserRepositoryInterface>()),
   );
+  // Make Transaction
+  _getIt.registerSingleton<MakeTransactionUsecase>(
+    MakeTransactionUsecase(_getIt.get<UserRepositoryInterface>()),
+  );
 }
 
 void _setUpBlocs() {
@@ -77,5 +83,9 @@ void _setUpBlocs() {
   // Create User
   _getIt.registerFactory<CreateUserBloc>(
     () => CreateUserBloc(_getIt.get<CreateUserUsecase>()),
+  );
+  // Make Transaction
+  _getIt.registerFactory<MakeTransactionBloc>(
+    () => MakeTransactionBloc(_getIt.get<MakeTransactionUsecase>()),
   );
 }

@@ -6,6 +6,7 @@ import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:ndef/ndef.dart' as ndef;
 import 'package:nfc/features/home/data/data_source/data_source_interface.dart';
 import 'package:nfc/features/home/data/models/user.dart';
+import 'package:nfc/features/home/domain/entities/operation_type_enum.dart';
 
 class NfcDataSourceImpl implements UserDataSourceInterface {
   NfcDataSourceImpl();
@@ -146,6 +147,53 @@ class NfcDataSourceImpl implements UserDataSourceInterface {
       return utf8.decode(record.payload ?? Uint8List(0));
     } catch (_) {
       return '';
+    }
+  }
+
+  @override
+  Future<void> makeTransaction(
+    UserModel user,
+    OperationTypeEnum operationType,
+    double amount,
+  ) {
+    return _makeTransactionInternal(user, operationType, amount);
+  }
+
+  Future<void> _makeTransactionInternal(
+    UserModel user,
+    OperationTypeEnum operationType,
+    double amount,
+  ) async {
+    if (amount <= 0) {
+      throw Exception('Amount must be greater than 0');
+    }
+
+    switch (operationType) {
+      case OperationTypeEnum.withdrawal:
+        // Read latest card data to validate current balance, then deduct
+        final UserModel currentOnCard = await getUser();
+        if (amount > currentOnCard.balance) {
+          throw Exception('Amount exceeds balance');
+        }
+        final UserModel updated = UserModel(
+          id: currentOnCard.id,
+          name: currentOnCard.name,
+          balance: currentOnCard.balance - amount,
+        );
+        await writeNfcData(updated.toJson());
+        return;
+      case OperationTypeEnum.deposit:
+        // Read current card, add amount, then write
+        final UserModel currentOnCard = await getUser();
+        final UserModel updated = UserModel(
+          id: currentOnCard.id,
+          name: currentOnCard.name,
+          balance: currentOnCard.balance + amount,
+        );
+        await writeNfcData(updated.toJson());
+        return;
+      case OperationTypeEnum.transfer:
+        throw Exception('Transfer operation is not supported');
     }
   }
 }
