@@ -8,6 +8,7 @@ import 'package:nfc/features/home/presentation/blocs/make_transaction_bloc.dart'
 import 'package:nfc/features/home/presentation/widgets/nfc_scan_modal.dart';
 import 'package:nfc/features/home/presentation/widgets/create_user_modal.dart';
 import 'package:nfc/features/home/presentation/widgets/make_transaction_modal.dart';
+import 'package:nfc/features/home/presentation/widgets/transfer_modal.dart';
 import 'package:nfc/service_locator.dart';
 
 class HomePage extends StatelessWidget {
@@ -147,6 +148,14 @@ class _HomePageBodyState extends State<HomePageBody> {
                           onTap: () => _showTransactionModal(context),
                           color: Theme.of(context).colorScheme.primary,
                         ),
+                        _buildActionButton(
+                          context,
+                          icon: Icons.swap_horiz,
+                          title: 'Transfer',
+                          subtitle: 'Move money between cards',
+                          onTap: () => _showTransferModal(context),
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ],
                     );
                   },
@@ -260,6 +269,18 @@ class _HomePageBodyState extends State<HomePageBody> {
       builder: (context) => BlocProvider(
         create: (_) => getService<MakeTransactionBloc>(),
         child: const MakeTransactionModal(),
+      ),
+    );
+  }
+
+  void _showTransferModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => BlocProvider(
+        create: (_) => getService<MakeTransactionBloc>(),
+        child: const TransferModal(),
       ),
     );
   }

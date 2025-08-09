@@ -193,7 +193,33 @@ class NfcDataSourceImpl implements UserDataSourceInterface {
         await writeNfcData(updated.toJson());
         return;
       case OperationTypeEnum.transfer:
-        throw Exception('Transfer operation is not supported');
+        // Transfer: scan sender, deduct; then scan recipient, add.
+        // Each step uses a single NFC session (poll -> read/write -> finish).
+        await _performTransfer(amount);
+        return;
     }
+  }
+
+  Future<void> _performTransfer(double amount) async {
+    // Step 1: Scan sender and deduct the amount
+    final UserModel senderCurrent = await getUser();
+    if (amount > senderCurrent.balance) {
+      throw Exception('Amount exceeds balance');
+    }
+    final UserModel senderUpdated = UserModel(
+      id: senderCurrent.id,
+      name: senderCurrent.name,
+      balance: senderCurrent.balance - amount,
+    );
+    await writeNfcData(senderUpdated.toJson());
+
+    // Step 2: Scan recipient and add the amount
+    final UserModel recipientCurrent = await getUser();
+    final UserModel recipientUpdated = UserModel(
+      id: recipientCurrent.id,
+      name: recipientCurrent.name,
+      balance: recipientCurrent.balance + amount,
+    );
+    await writeNfcData(recipientUpdated.toJson());
   }
 }
